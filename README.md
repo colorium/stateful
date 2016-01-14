@@ -1,0 +1,1 @@
+# Colorium Stateful Session Component

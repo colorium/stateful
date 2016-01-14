@@ -1,0 +1,23 @@
+{
+  "name": "colorium/stateful",
+  "type": "library",
+  "description": "Stateful Session Component",
+  "homepage": "https://github.com/colorium/stateful",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Aymeric Assier",
+      "email": "aymeric.assier@gmail.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=5.6",
+    "colorium/arraydot": "dev-master"
+  },
+  "autoload": {
+    "psr-4": {
+      "Colorium\\Stateful\\": "/src/Colorium/Stateful/"
+    }
+  }
+}
