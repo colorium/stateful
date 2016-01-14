@@ -1,1 +1,5 @@
-# Colorium Stateful Session Component
+# Session handler providing stateful persistence
+
+## Install
+
+`composer require colorium/stateful`
