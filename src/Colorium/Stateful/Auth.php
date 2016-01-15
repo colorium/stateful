@@ -5,8 +5,14 @@ namespace Colorium\Stateful;
 abstract class Auth
 {
 
-    /** @var Provider */
+    /** @var provider */
     protected static $provider;
+
+    /** @var \Closure */
+    protected static $factory;
+
+    /** @var object */
+    protected static $user;
 
     /** @var string */
     protected static $root = '__AUTH__';
@@ -15,19 +21,30 @@ abstract class Auth
     /**
      * Load session provider
      *
-     * @param Provider $provider
-     * @return Provider
+     * @param provider $provider
+     * @return provider
      */
-    public static function provider(Provider $provider = null)
+    public static function provider(provider $provider = null)
     {
         if($provider) {
             static::$provider = $provider;
         }
         elseif(!static::$provider) {
-            static::$provider = new Provider\Native(static::$root);
+            static::$provider = new provider\Native(static::$root);
         }
 
         return static::$provider;
+    }
+
+
+    /**
+     * Set user factory
+     *
+     * @param \Closure $factory
+     */
+    public static function factory(\Closure $factory)
+    {
+        static::$factory = $factory;
     }
 
 
@@ -43,13 +60,28 @@ abstract class Auth
 
 
     /**
+     * Get user ref
+     *
+     * @return string
+     */
+    public static function ref()
+    {
+        return static::provider()->get('ref');
+    }
+
+
+    /**
      * Get user object
      *
      * @return object
      */
     public static function user()
     {
-        return static::provider()->get('user');
+        if(!static::$user and static::$factory) {
+            static::$user = call_user_func(static::$factory, static::ref());
+        }
+
+        return static::$user;
     }
 
 
@@ -57,12 +89,12 @@ abstract class Auth
      * Log user in session
      *
      * @param int $rank
-     * @param object $user
+     * @param string $ref
      */
-    public static function login($rank = 1, $user = null)
+    public static function login($rank = 1, $ref = null)
     {
         static::provider()->set('rank', $rank);
-        static::provider()->set('user', $user);
+        static::provider()->set('ref', $ref);
     }
 
 
@@ -72,7 +104,7 @@ abstract class Auth
     public static function logout()
     {
         static::provider()->drop('rank');
-        static::provider()->drop('user');
+        static::provider()->drop('ref');
     }
 
 }
