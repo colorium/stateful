@@ -2,9 +2,9 @@
 
 namespace Colorium\Stateful\Provider;
 
-use Colorium\Stateful\Provider;
+use Colorium\Stateful\Contract;
 
-class Native implements Provider
+class Native implements Contract\ProviderInterface
 {
 
     /** @var string */

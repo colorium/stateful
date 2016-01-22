@@ -2,10 +2,12 @@
 
 namespace Colorium\Stateful;
 
+use Colorium\Stateful\Contract\ProviderInterface;
+
 abstract class Auth
 {
 
-    /** @var provider */
+    /** @var ProviderInterface */
     protected static $provider;
 
     /** @var \Closure */
@@ -21,10 +23,10 @@ abstract class Auth
     /**
      * Load session provider
      *
-     * @param provider $provider
-     * @return provider
+     * @param ProviderInterface $provider
+     * @return ProviderInterface
      */
-    public static function provider(provider $provider = null)
+    public static function provider(ProviderInterface $provider = null)
     {
         if($provider) {
             static::$provider = $provider;

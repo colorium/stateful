@@ -1,8 +1,8 @@
 <?php
 
-namespace Colorium\Stateful;
+namespace Colorium\Stateful\Contract;
 
-interface Provider
+interface ProviderInterface
 {
 
     /**
