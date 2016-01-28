@@ -51,24 +51,26 @@ abstract class Auth
 
 
     /**
-     * Get user rank
+     * Get validity
      *
-     * @return int
+     * @return bool
      */
-    public static function rank()
+    public static function valid()
     {
-        return static::provider()->get('rank', 0);
+        return static::provider()->get('valid', false);
     }
 
 
     /**
-     * Get user ref
+     * Get user rank
      *
-     * @return string
+     * @param int $match
+     * @return int
      */
-    public static function ref()
+    public static function rank($match = 0)
     {
-        return static::provider()->get('ref');
+        $rank = static::provider()->get('rank', 0);
+        return $rank >= $match;
     }
 
 
@@ -80,7 +82,8 @@ abstract class Auth
     public static function user()
     {
         if(!static::$user and static::$factory) {
-            static::$user = call_user_func(static::$factory, static::ref());
+            $id = static::provider()->get('id');
+            static::$user = call_user_func(static::$factory, $id);
         }
 
         return static::$user;
@@ -91,12 +94,16 @@ abstract class Auth
      * Log user in session
      *
      * @param int $rank
-     * @param string $ref
+     * @param string $id
+     * @return object
      */
-    public static function login($rank = 1, $ref = null)
+    public static function login($rank = 1, $id = null)
     {
+        static::provider()->set('valid', true);
         static::provider()->set('rank', $rank);
-        static::provider()->set('ref', $ref);
+        static::provider()->set('id', $id);
+
+        return static::user();
     }
 
 
@@ -105,8 +112,9 @@ abstract class Auth
      */
     public static function logout()
     {
+        static::provider()->drop('valid');
         static::provider()->drop('rank');
-        static::provider()->drop('ref');
+        static::provider()->drop('id');
     }
 
 }
