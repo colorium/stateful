@@ -32,7 +32,7 @@ abstract class Auth
             static::$provider = $provider;
         }
         elseif(!static::$provider) {
-            static::$provider = new provider\Native(static::$root);
+            static::$provider = new Provider\Native(static::$root);
         }
 
         return static::$provider;
