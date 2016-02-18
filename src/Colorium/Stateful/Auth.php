@@ -64,13 +64,11 @@ abstract class Auth
     /**
      * Get user rank
      *
-     * @param int $match
      * @return int
      */
-    public static function rank($match = 0)
+    public static function rank()
     {
-        $rank = static::provider()->get('rank', 0);
-        return $rank >= $match;
+        return static::provider()->get('rank', 0);
     }
 
 
